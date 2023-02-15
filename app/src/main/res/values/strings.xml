@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="Home">Home</string>
+    <string name="fav">Favourite</string>
+    <string name="recentSearch">Recent Search</string>
+</resources>
