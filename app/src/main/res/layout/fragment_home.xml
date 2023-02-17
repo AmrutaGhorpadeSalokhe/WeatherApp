@@ -9,7 +9,7 @@
 
         <variable
             name="model"
-            type="com.bersyte.weatherapp.db.RecSearchFavWeatherModel" />
+            type="com.bersyte.weatherapp.db.RecSearchFvWeatherModel" />
 
         <import type="android.R.attr"/>
 

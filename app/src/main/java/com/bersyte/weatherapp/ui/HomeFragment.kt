@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.FragmentHomeBinding
-import com.bersyte.weatherapp.db.RecSearchFavWeatherModel
+import com.bersyte.weatherapp.db.RecSearchFvWeatherModel
 import com.bersyte.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +27,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_home, container, false)
         binding.weatheViewModel = viewModel
@@ -67,7 +67,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     true
                 }
                 R.id.favCity -> {
-                    (activity as MainActivity?)?.showFragment(FavouriteFragment(), true)
+                    binding.drawerLayout.closeDrawers()
+                    openFavFragment()
                     true
                 }
                 R.id.recSearch -> {
@@ -78,14 +79,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 else -> false
             }
         }
+
+    }
+
+    private fun openFavFragment(){
+        (activity as MainActivity?)?.showFragment(RecFavFragment(), true)
+
     }
 
     private fun getWeather() {
         viewModel.getCityWeather(searchedcCity)
         viewModel.weatherResponse.observe(viewLifecycleOwner) { weatherData ->
             binding.apply {
-                val recFavWeatherModel=RecSearchFavWeatherModel(
-                    id,
+                val recFavWeatherModel=RecSearchFvWeatherModel(
+                    id=0,
                     cityName = weatherData.name,
                     cityTempInDegree = weatherData.weather[0].main,
                     cityTempInWords = weatherData.weather[0].description,
@@ -109,6 +116,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
               }*/
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding?.unbind()
     }
 
 }

@@ -1,26 +1,25 @@
 package com.bersyte.weatherapp.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface weatherDao {
 
-    @Query("SELECT * FROM RecSearchFavWeatherModel where isFav=:isFav")
-    suspend fun getAllFavourite(isFav:Boolean): List<RecSearchFavWeatherModel>
+    @Query("SELECT * FROM RecSearchFvWeatherModel where isFav=:isFav")
+    suspend fun getAllFavourite(isFav:Boolean): List<RecSearchFvWeatherModel>
 
 
-    @Query("SELECT * FROM RecSearchFavWeatherModel where isRecentSearch=:isRecentSearch")
-    suspend fun getAllRecentSearch(isRecentSearch:Boolean): List<RecSearchFavWeatherModel>
-
-    @Insert
-    suspend fun addToRecentSearch(recFavWeatherModel: RecSearchFavWeatherModel)
+    @Query("SELECT * FROM RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
+    suspend fun getAllRecentSearch(isRecentSearch:Boolean): List<RecSearchFvWeatherModel>
 
     @Insert
-    suspend fun addToFav(recFavWeatherModel: RecSearchFavWeatherModel)
+    suspend fun addToRecentSearch(recFavWeatherModel: RecSearchFvWeatherModel)
+
+    @Insert
+    suspend fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel)
 
 
-    @Query("UPDATE RecSearchFavWeatherModel SET isFav=:isFav WHERE id = :id")
+    @Query("UPDATE RecSearchFvWeatherModel SET isFav=:isFav WHERE id = :id")
     fun updateToRecentSearchToFav(isFav: Boolean, id: Int)
      //remove from favourite
      //remove all from favourite
@@ -29,12 +28,12 @@ interface weatherDao {
 
 
     @Delete
-    suspend fun delete(recFavWeatherModel: RecSearchFavWeatherModel)
+    suspend fun delete(recFavWeatherModel: RecSearchFvWeatherModel)
 
-    @Query("Delete from RecSearchFavWeatherModel where isFav= :isFav")
+    @Query("Delete from RecSearchFvWeatherModel where isFav= :isFav")
     fun deleteAllFavRecords(isFav: Boolean)
 
-    @Query("Delete from RecSearchFavWeatherModel where isRecentSearch=:isRecentSearch")
+    @Query("Delete from RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
     fun deleteAllRecentSearch(isRecentSearch:Boolean)
 
 

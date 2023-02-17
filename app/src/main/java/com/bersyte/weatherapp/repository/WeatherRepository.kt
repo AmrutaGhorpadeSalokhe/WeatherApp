@@ -1,22 +1,28 @@
 package com.bersyte.weatherapp.repository
 
 import com.bersyte.weatherapp.api.ApiService
-import com.bersyte.weatherapp.db.RecSearchFavWeatherModel
+import com.bersyte.weatherapp.db.RecSearchFvWeatherModel
 import com.bersyte.weatherapp.db.weatherDao
 import javax.inject.Inject
 
 class WeatherRepository
 @Inject
-constructor(private val apiService: ApiService,private val dao: weatherDao) {
+constructor(private val apiService: ApiService, private val dao: weatherDao) {
 
-    suspend fun getWeather(cityName:String) = apiService.getWeather(cityName = cityName)
+    suspend fun getWeather(cityName: String) = apiService.getWeather(cityName = cityName)
 
-    //suspend fun getAllRecentSearch() = dao.getAllRecentSearch()
+    suspend fun getAllRecentSearch(isRecentSearch: Boolean) = dao.getAllRecentSearch(isRecentSearch)
 
-    //suspend fun getAllFavCity() = dao.getAllFavourite()
+    suspend fun getAllFavCity(isFav: Boolean) = dao.getAllFavourite(isFav)
 
-    suspend fun addToFav(recFavWeatherModel: RecSearchFavWeatherModel)=dao.addToFav(recFavWeatherModel)
+    suspend fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) =
+        dao.addToFav(recFavWeatherModel)
 
-  //  suspend fun addToFav(recFavWeatherModel: recFavWeatherModel)=dao.addToFav(recFavWeatherModel)
+    suspend fun deleteFav(recFavWeatherModel: RecSearchFvWeatherModel) =
+        dao.delete(recFavWeatherModel)
+
+    suspend fun deleteAllFav() = dao.deleteAllFavRecords(true)
+
+    suspend fun deleteAllRecSearch() = dao.deleteAllRecentSearch(true)
 
 }

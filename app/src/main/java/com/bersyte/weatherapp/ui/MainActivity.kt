@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        showFragment(SplashFragment(),false)
+        showFragment(SplashFragment(), false)
 
     }
 
@@ -43,17 +43,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showCityWeather(fragment: Fragment, bundle: Bundle){
+    fun showCityWeather(fragment: Fragment, bundle: Bundle) {
         val fm = supportFragmentManager.beginTransaction()
         fragment.arguments = bundle
-            fm.add(R.id.rootFragment, fragment)
-               // .addSharedElement(homeTemperature,"image")
-                //.setCustomAnimations(R.anim.fade_out, R.anim.fade_in)
-                .addToBackStack(null)
-                .commit()
+        fm.add(R.id.rootFragment, fragment)
+            // .addSharedElement(homeTemperature,"image")
+            //.setCustomAnimations(R.anim.fade_out, R.anim.fade_in)
+            .addToBackStack(null)
+            .commit()
 
 
     }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()

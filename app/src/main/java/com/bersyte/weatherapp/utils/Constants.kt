@@ -3,6 +3,10 @@ package com.bersyte.weatherapp.utils
 object Constants {
     const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
     const val API_KEY= "2d87e9787ef792ecfdc909ebfa0f9d1d"
+    const val REMOVE_ONLY_FAV="only_fav"
+    const val REMOVE_ALL_FAV="only_all_fav"
+    const val REMOVE_ALL_SEARCH="only_all_search"
+
     val cityList = arrayListOf<String>(
         "Adilabad",
         "Anantapur",

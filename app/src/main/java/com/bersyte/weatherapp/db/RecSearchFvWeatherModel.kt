@@ -9,8 +9,9 @@ import kotlinx.parcelize.Parcelize
 
 @Entity
 @Parcelize
-data class RecSearchFavWeatherModel(
-    @PrimaryKey val id: Int,
+data class RecSearchFvWeatherModel(
+    @PrimaryKey (autoGenerate = true)
+    @ColumnInfo(name ="id") val id:Int,
     @ColumnInfo(name = "cityName") val cityName: String?,
     @ColumnInfo(name = "cityTempInDegree") val cityTempInDegree: String?,
     @ColumnInfo(name = "cityTempInWords") val cityTempInWords: String?,

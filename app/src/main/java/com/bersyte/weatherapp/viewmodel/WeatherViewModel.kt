@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bersyte.weatherapp.db.RecSearchFavWeatherModel
+import com.bersyte.weatherapp.db.RecSearchFvWeatherModel
 import com.bersyte.weatherapp.model.WeatherDataModel
 import com.bersyte.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,17 +22,16 @@ constructor(val repository: WeatherRepository) : ViewModel() {
         get() = _response
 
 
-    private val _favCity = MutableLiveData<ArrayList<RecSearchFavWeatherModel>>()
-    val favResponse: LiveData<ArrayList<RecSearchFavWeatherModel>>
+    private val _favCity = MutableLiveData<ArrayList<RecSearchFvWeatherModel>>()
+    val favResponse: LiveData<ArrayList<RecSearchFvWeatherModel>>
         get() = _favCity
 
 
-
-    fun getCityWeather(cityName: String?){
+    fun getCityWeather(cityName: String?) {
         getWeather(cityName!!)
     }
 
-    private fun getWeather(cityName:String) = viewModelScope.launch {
+    private fun getWeather(cityName: String) = viewModelScope.launch {
         repository.getWeather(cityName).let { response ->
 
             if (response.isSuccessful) {
@@ -42,15 +41,30 @@ constructor(val repository: WeatherRepository) : ViewModel() {
             }
         }
     }
-    fun addToFav(recFavWeatherModel: RecSearchFavWeatherModel)=viewModelScope.launch {
-        repository.addToFav(recFavWeatherModel).let {res->
+
+    fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) = viewModelScope.launch {
+        repository.addToFav(recFavWeatherModel).let { res ->
 
         }
     }
-    fun getAllFavoriteCity()=viewModelScope.launch {
-//        repository.getAllFavCity().let { res->
-//           // _favCity.postValue(res)
-//        }
+
+    fun getAllFavoriteCity() = viewModelScope.launch {
+        repository.getAllFavCity(true).let { res ->
+            val resList = res as ArrayList
+            _favCity.postValue(resList)
+        }
+    }
+
+    fun deleteFav(recWeatherRepository: RecSearchFvWeatherModel) =viewModelScope.launch {
+        repository.deleteFav(recWeatherRepository)
+    }
+
+    fun deleteAllFav()=viewModelScope.launch {
+        repository.deleteAllFav()
+    }
+
+    fun deleteAllRecentSearch()=viewModelScope.launch {
+        repository.deleteAllRecSearch()
     }
 
 }
