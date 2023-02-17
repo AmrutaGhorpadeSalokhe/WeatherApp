@@ -112,7 +112,7 @@
                 android:text="Add to favourite"
                 android:background="?android:attr/selectableItemBackground"
                 app:iconTint="@color/white"
-                android:onClick="@={()-> weatheViewModel.addToFav(model)}"
+                android:onClick="@{() -> weatheViewModel.addToFav(model)}"
                 android:textColor="@color/white"/>
 
 <!--

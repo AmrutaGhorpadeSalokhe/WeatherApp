@@ -11,9 +11,9 @@ constructor(private val apiService: ApiService,private val dao: weatherDao) {
 
     suspend fun getWeather(cityName:String) = apiService.getWeather(cityName = cityName)
 
-    suspend fun getAllRecentSearch() = dao.getAllRecentSearch()
+    //suspend fun getAllRecentSearch() = dao.getAllRecentSearch()
 
-    suspend fun getAllFavCity() = dao.getAllFavourite()
+    //suspend fun getAllFavCity() = dao.getAllFavourite()
 
     suspend fun addToFav(recFavWeatherModel: RecSearchFavWeatherModel)=dao.addToFav(recFavWeatherModel)
 

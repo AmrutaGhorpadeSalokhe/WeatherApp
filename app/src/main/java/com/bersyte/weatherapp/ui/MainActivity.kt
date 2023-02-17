@@ -36,8 +36,9 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 val fm = supportFragmentManager.beginTransaction()
-                fm.add(rootFragment.id, fragment)
-                    .commit()
+                fm.add(rootFragment.id, fragment).commitAllowingStateLoss()
+
+                // .commit()
             }
         }
     }

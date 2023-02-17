@@ -48,9 +48,9 @@ constructor(val repository: WeatherRepository) : ViewModel() {
         }
     }
     fun getAllFavoriteCity()=viewModelScope.launch {
-        repository.getAllFavCity().let { res->
-           // _favCity.postValue(res)
-        }
+//        repository.getAllFavCity().let { res->
+//           // _favCity.postValue(res)
+//        }
     }
 
 }
