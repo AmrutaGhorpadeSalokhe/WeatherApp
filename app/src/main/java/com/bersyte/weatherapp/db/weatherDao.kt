@@ -20,21 +20,19 @@ interface weatherDao {
 
 
     @Query("UPDATE RecSearchFvWeatherModel SET isFav=:isFav WHERE id = :id")
-    fun updateToRecentSearchToFav(isFav: Boolean, id: Int)
+    suspend fun updateToRecentSearchToFav(isFav: Boolean, id: Int)
      //remove from favourite
      //remove all from favourite
      //add to recent search
-
-
 
     @Delete
     suspend fun delete(recFavWeatherModel: RecSearchFvWeatherModel)
 
     @Query("Delete from RecSearchFvWeatherModel where isFav= :isFav")
-    fun deleteAllFavRecords(isFav: Boolean)
+    suspend fun deleteAllFavRecords(isFav: Boolean)
 
     @Query("Delete from RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
-    fun deleteAllRecentSearch(isRecentSearch:Boolean)
+    suspend fun deleteAllRecentSearch(isRecentSearch:Boolean)
 
 
 }
