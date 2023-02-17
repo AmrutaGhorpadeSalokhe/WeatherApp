@@ -3,4 +3,12 @@
     <string name="Home">Home</string>
     <string name="fav">Favourite</string>
     <string name="recentSearch">Recent Search</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="min_max">Min - Max</string>
+    <string name="humidity">Humidity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_match">No match found</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

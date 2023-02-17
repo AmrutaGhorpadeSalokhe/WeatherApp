@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bersyte.weatherapp.model.Weather
+import com.bersyte.weatherapp.db.RecSearchFavWeatherModel
+import com.bersyte.weatherapp.model.WeatherDataModel
 import com.bersyte.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,19 +15,25 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel
 @Inject
-constructor(private val repository: WeatherRepository) : ViewModel() {
+constructor(val repository: WeatherRepository) : ViewModel() {
 
-    private val _response = MutableLiveData<Weather>()
-    val weatherResponse: LiveData<Weather>
+    private val _response = MutableLiveData<WeatherDataModel>()
+    val weatherResponse: LiveData<WeatherDataModel>
         get() = _response
 
 
-    init {
-        getWeather()
+    private val _favCity = MutableLiveData<ArrayList<RecSearchFavWeatherModel>>()
+    val favResponse: LiveData<ArrayList<RecSearchFavWeatherModel>>
+        get() = _favCity
+
+
+
+    fun getCityWeather(cityName: String?){
+        getWeather(cityName!!)
     }
 
-    private fun getWeather() = viewModelScope.launch {
-        repository.getWeather().let { response ->
+    private fun getWeather(cityName:String) = viewModelScope.launch {
+        repository.getWeather(cityName).let { response ->
 
             if (response.isSuccessful) {
                 _response.postValue(response.body())
@@ -35,7 +42,16 @@ constructor(private val repository: WeatherRepository) : ViewModel() {
             }
         }
     }
+    fun addToFav(recFavWeatherModel: RecSearchFavWeatherModel)=viewModelScope.launch {
+        repository.addToFav(recFavWeatherModel).let {res->
 
+        }
+    }
+    fun getAllFavoriteCity()=viewModelScope.launch {
+        repository.getAllFavCity().let { res->
+           // _favCity.postValue(res)
+        }
+    }
 
 }
 

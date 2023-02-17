@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+
+        <variable
+            name="weatheViewModel"
+            type="com.bersyte.weatherapp.viewmodel.WeatherViewModel" />
+
+        <variable
+            name="model"
+            type="com.bersyte.weatherapp.db.RecSearchFavWeatherModel" />
+
+        <import type="android.R.attr"/>
+
+    </data>
+
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/homeBG"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,6 +24,9 @@
     android:layout_width="match_parent"
     android:background="@mipmap/background_android"
     android:layout_height="match_parent">
+
+
+
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -28,6 +49,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:elevation="0dp">
                 <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:navigationIcon="@mipmap/icon_menu_white"
@@ -37,12 +59,17 @@
                         android:layout_height="100dp"
                         android:src="@mipmap/logo"
                         android:layout_gravity="center_vertical|top"/>
-                    <androidx.appcompat.widget.SearchView
+                    <ImageButton
                         android:id="@+id/searchButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        app:searchIcon="@mipmap/icon_search_white"/>
+                        android:src="@mipmap/icon_search_white"
+                        android:paddingEnd="20dp"
+                        android:backgroundTint="@null"
+                        android:background="@null"
+                        android:paddingStart="10dp"
+                        />
 
 
                 </com.google.android.material.appbar.MaterialToolbar>
@@ -56,7 +83,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/cityTextView"
-                android:text="WED, 28 NOV 2018   11:35 AM"
+                android:text="@{weatheViewModel.weatherResponse.name}"
                 android:textColor="@color/white"
                 />
 
@@ -82,12 +109,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
-                app:icon="@mipmap/icon_favourite"
                 android:text="Add to favourite"
                 android:background="?android:attr/selectableItemBackground"
                 app:iconTint="@color/white"
+                android:onClick="@={()-> weatheViewModel.addToFav(model)}"
                 android:textColor="@color/white"/>
 
+<!--
+                            app:setIcon="@{model.isFav()}"
+
+            app:icon="@{(model.isFav==true) ? @mipmap/icon_favourite_active : @minmap/icon_favourite}"
+-->
 
 
 
@@ -142,7 +174,6 @@
                 android:layout_height="1dp"
                 android:background="@color/white"
                 android:id="@+id/view"
-
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bottomGuideline"
@@ -151,6 +182,8 @@
                 android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 app:layout_constraintTop_toBottomOf="@id/bottomGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -290,13 +323,28 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <com.google.android.material.navigation.NavigationView
+
+
+        <!--<com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:background="@color/white"
+            app:iconTint="@color/colorPrimaryDark"
+            app:itemIconTint="#7d5593"
+            app:itemBackground="@drawable/ripple_effect"
+            app:menu="@menu/drawer_menu" />-->
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
             app:menu="@menu/drawer_menu" />
-
     </androidx.drawerlayout.widget.DrawerLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

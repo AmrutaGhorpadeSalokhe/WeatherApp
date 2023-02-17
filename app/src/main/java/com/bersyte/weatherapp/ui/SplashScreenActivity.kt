@@ -16,4 +16,24 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
     }
+   /* private fun startMainActivity() {
+
+        // if (isSplash){
+
+        val timer: Thread = object : Thread() {
+            override fun run() {
+                try {
+                    sleep(1000)
+
+                    (activity as MainActivity?)?.showFragment(HomeFragment(), false)
+
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        timer.start()
+        // }
+    }
+*/
 }

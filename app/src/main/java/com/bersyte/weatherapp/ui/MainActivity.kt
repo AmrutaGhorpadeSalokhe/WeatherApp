@@ -1,9 +1,13 @@
 package com.bersyte.weatherapp.ui
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.ActivityMainBinding
+import com.bersyte.weatherapp.utils.CloseDialog
 import com.bersyte.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,22 +22,42 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        showFragment(SplashFragment(),false)
 
-        viewModel.weatherResponse.observe(this, { weather ->
+    }
 
-            binding.apply {
-                tvCityName.text = "Luanda"
-                tvDescription.text = weather.description
-                tvTemperature.text = weather.temperature
-                tvWind.text = weather.wind
+    fun showFragment(fragment: Fragment, b: Boolean) {
+        binding.apply {
+            if (b) {
+                val fm = supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                fm.add(rootFragment.id, fragment)
+                    .commit()
 
-                val forecast = weather.forecast
-                tvForecast1.text = "${forecast[0].temperature}/ ${forecast[0].wind}"
-                tvForecast2.text = "${forecast[1].temperature}/ ${forecast[1].wind}"
-                tvForecast3.text = "${forecast[2].temperature}/ ${forecast[2].wind}"
-
+            } else {
+                val fm = supportFragmentManager.beginTransaction()
+                fm.add(rootFragment.id, fragment)
+                    .commit()
             }
+        }
+    }
 
-        })
+    fun showCityWeather(fragment: Fragment, bundle: Bundle){
+        val fm = supportFragmentManager.beginTransaction()
+        fragment.arguments = bundle
+            fm.add(R.id.rootFragment, fragment)
+               // .addSharedElement(homeTemperature,"image")
+                //.setCustomAnimations(R.anim.fade_out, R.anim.fade_in)
+                .addToBackStack(null)
+                .commit()
+
+
+    }
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            CloseDialog().show(supportFragmentManager, "close_diag")
+        }
     }
 }
