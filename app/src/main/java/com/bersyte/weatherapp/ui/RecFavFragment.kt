@@ -1,5 +1,7 @@
 package com.bersyte.weatherapp.ui
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import com.bersyte.weatherapp.utils.Constants.REMOVE_ONLY_FAV
 import com.bersyte.weatherapp.utils.hideKeyboardFrom
 import com.bersyte.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
@@ -63,6 +66,10 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
             }
 
         }
+        binding.toolBar.setNavigationOnClickListener {
+            hideKeyboardFrom(context!!,binding.root)
+            (activity as MainActivity?)?.showFragment(HomeFragment(), false)
+        }
         setupSearchView()
     }
 
@@ -97,10 +104,15 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
             }
         })
         binding.removeAllText.setOnClickListener {
+
             if (isFavSearch) {
-                viewModel.deleteAllFav()
+                if (showDialog(getString(com.bersyte.weatherapp.R.string.remodeAllFavString))) {
+                    viewModel.deleteAllFav()
+                }
             } else {
-                viewModel.deleteAllRecentSearch()
+                if (showDialog(getString(com.bersyte.weatherapp.R.string.remodeAllRecSearchString))) {
+                    viewModel.deleteAllRecentSearch()
+                }
             }
             setListVisiblity(false)
 
@@ -118,6 +130,33 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
 
              //(activity as MainActivity?)?.showFragment(HomeFragment(), false)
          }*/
+    }
+
+    private fun showDialog(message: String): Boolean {
+        /* val builder = AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
+        builder.setTitle("Dialog")
+
+        builder.setMessage(message)
+        builder.setPositiveButton("OK", null)
+        builder.setNegativeButton("Cancel", null)
+        builder.show()*/
+        var showDialog: Boolean = false
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(message)
+        builder.setTitle("Alert !")
+        builder.setCancelable(false)
+        builder.setPositiveButton(
+            "Yes"
+        ) { dialog: DialogInterface?, _: Int ->
+            showDialog = true
+        }
+        builder.setNegativeButton(
+            "No"
+        ) { dialog: DialogInterface, _: Int ->
+            showDialog = false
+            dialog.cancel()
+        }
+        return showDialog
     }
 
     private fun setListVisiblity(visible: Boolean) {
@@ -138,12 +177,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     override fun onItemClick(recFavWeatherModel: RecSearchFvWeatherModel, removeFlag: String) {
         when (removeFlag) {
             REMOVE_ONLY_FAV -> {
-                if (recFavWeatherModel.isFav!!) {
-                    viewModel.deleteFav(recFavWeatherModel)
-                } else {
-                    viewModel.addToFav(recFavWeatherModel)
-                }
-
+                    viewModel.addRemoveFav(recFavWeatherModel)
             }
         }
 

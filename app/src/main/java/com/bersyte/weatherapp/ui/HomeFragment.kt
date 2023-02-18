@@ -99,7 +99,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     isFav = true,
                     isRecentSearch = true
                 )
-                binding.model=recFavWeatherModel
+               // binding.model=recFavWeatherModel
 
             }
             /*  binding.apply {

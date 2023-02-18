@@ -7,10 +7,10 @@
             name="weatheViewModel"
             type="com.bersyte.weatherapp.viewmodel.WeatherViewModel" />
 
-        <variable
+       <!-- <variable
             name="model"
-            type="com.bersyte.weatherapp.db.RecSearchFvWeatherModel" />
-
+            type="com.bersyte.weatherapp.viewmodel.WeatherViewModel.recFavWeatherModel" />
+-->
         <import type="android.R.attr"/>
 
     </data>
@@ -110,9 +110,10 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
                 android:text="Add to favourite"
+                app:setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
                 android:background="?android:attr/selectableItemBackground"
                 app:iconTint="@color/white"
-                android:onClick="@{() -> weatheViewModel.addToFav(model)}"
+                android:onClick="@{() -> weatheViewModel.addRemoveFav(weatheViewModel.recFavWeatherModel)}"
                 android:textColor="@color/white"/>
 
 <!--

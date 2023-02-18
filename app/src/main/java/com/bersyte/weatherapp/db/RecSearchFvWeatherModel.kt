@@ -15,7 +15,7 @@ data class RecSearchFvWeatherModel(
     @ColumnInfo(name = "cityName") val cityName: String?,
     @ColumnInfo(name = "cityTempInDegree") val cityTempInDegree: String?,
     @ColumnInfo(name = "cityTempInWords") val cityTempInWords: String?,
-    @ColumnInfo(name = "isFav") val isFav: Boolean?,
-    @ColumnInfo(name = "isRecentSearch") val isRecentSearch: Boolean?,
+    @ColumnInfo(name = "isFav") var isFav: Boolean?,
+    @ColumnInfo(name = "isRecentSearch") var isRecentSearch: Boolean?,
 
 ) : Parcelable

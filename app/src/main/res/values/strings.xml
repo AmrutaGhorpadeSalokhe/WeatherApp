@@ -11,4 +11,6 @@
     <string name="no_match">No match found</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="remodeAllFavString">Are you sure want to remove all the favourites?</string>
+    <string name="remodeAllRecSearchString">Are you sure want to remove all the recent search?</string>
 </resources>

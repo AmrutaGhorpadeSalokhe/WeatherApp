@@ -26,6 +26,12 @@ constructor(val repository: WeatherRepository) : ViewModel() {
     val favResponse: LiveData<ArrayList<RecSearchFvWeatherModel>>
         get() = _favCity
 
+    private val _recFavWeatherModel = MutableLiveData<RecSearchFvWeatherModel>()
+    val recFavWeatherModel: LiveData<RecSearchFvWeatherModel>
+        get() = _recFavWeatherModel
+
+    var recWeatherModelTemp = MutableLiveData<RecSearchFvWeatherModel>()
+
 
     fun getCityWeather(cityName: String?) {
         getWeather(cityName!!)
@@ -36,16 +42,34 @@ constructor(val repository: WeatherRepository) : ViewModel() {
 
             if (response.isSuccessful) {
                 _response.postValue(response.body())
+                //check if item present in room and theN Get from local
+                val tempObj = RecSearchFvWeatherModel(
+                    id = 0,
+                    cityName = response.body()!!.name,
+                    cityTempInDegree = response.body()!!.weather[0].main,
+                    cityTempInWords = response.body()!!.weather[0].description,
+                    isFav = true,
+                    isRecentSearch = true
+                )
+                //recWeatherModelTemp.postValue(tempObj)
+                _recFavWeatherModel.postValue(tempObj)
             } else {
                 Log.d("tag", "getWeather Error: ${response.code()}")
             }
         }
     }
 
-    fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) = viewModelScope.launch {
-        repository.addToFav(recFavWeatherModel).let { res ->
-
+    fun addRemoveFav(recFavWeatherModel: RecSearchFvWeatherModel) = viewModelScope.launch {
+        if (!recFavWeatherModel.isFav!!) {
+            repository.addToFav(recFavWeatherModel)
+            recWeatherModelTemp.value?.isFav = true
+        } else {
+            repository.removeFromFav(false, recFavWeatherModel.id)
         }
+        repository.getFavModel(recFavWeatherModel.id).let { res ->
+            _recFavWeatherModel.postValue(res)
+        }
+
     }
 
     fun getAllFavoriteCity() = viewModelScope.launch {
@@ -55,9 +79,9 @@ constructor(val repository: WeatherRepository) : ViewModel() {
         }
     }
 
-    fun deleteFav(recWeatherRepository: RecSearchFvWeatherModel) =viewModelScope.launch {
-        repository.deleteFav(recWeatherRepository)
-    }
+    /*fun deleteFav(recWeatherRepository: RecSearchFvWeatherModel) =viewModelScope.launch {
+        repository.(recWeatherRepository)
+    }*/
 
     fun deleteAllFav()=viewModelScope.launch {
         repository.deleteAllFav()

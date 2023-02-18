@@ -1,5 +1,7 @@
 package com.bersyte.weatherapp.utils
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +24,7 @@ class CloseDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-      /*  dialog!!.window?.setBackgroundDrawableResource(R.drawable.close_dialog_bg)
+    /*    dialog!!.window?.setBackgroundDrawableResource(R.drawable.close_dialog_bg)
 
         val view = inflater.inflate(R.layout.close_diag, container, false)
 
@@ -35,6 +37,18 @@ class CloseDialog : DialogFragment() {
         undoBtn.setOnClickListener {
             dismiss()
         }*/
+     /*   val builder = AlertDialog.Builder(context)
+        builder.setMessage("Do you want to exit ?")
+        builder.setTitle("Alert !")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Yes",
+            DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                finish()
+            })
+        builder.setNegativeButton("No",
+            DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
+                dialog.cancel()
+            } )*/
 
         return view;
     }

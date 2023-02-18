@@ -6,11 +6,14 @@ import androidx.room.*
 interface weatherDao {
 
     @Query("SELECT * FROM RecSearchFvWeatherModel where isFav=:isFav")
-    suspend fun getAllFavourite(isFav:Boolean): List<RecSearchFvWeatherModel>
+    suspend fun getAllFavourite(isFav: Boolean): List<RecSearchFvWeatherModel>
+
+    @Query("SELECT * FROM RecSearchFvWeatherModel where isFav=:id")
+    suspend fun getFavouriteModel(id: Int): RecSearchFvWeatherModel
 
 
     @Query("SELECT * FROM RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
-    suspend fun getAllRecentSearch(isRecentSearch:Boolean): List<RecSearchFvWeatherModel>
+    suspend fun getAllRecentSearch(isRecentSearch: Boolean): List<RecSearchFvWeatherModel>
 
     @Insert
     suspend fun addToRecentSearch(recFavWeatherModel: RecSearchFvWeatherModel)
@@ -27,6 +30,9 @@ interface weatherDao {
 
     @Delete
     suspend fun delete(recFavWeatherModel: RecSearchFvWeatherModel)
+
+    @Query("Update RecSearchFvWeatherModel SET isFav=isFav where id=:id")
+    suspend fun removeFromFav(isFav: Boolean,id: Int)
 
     @Query("Delete from RecSearchFvWeatherModel where isFav= :isFav")
     suspend fun deleteAllFavRecords(isFav: Boolean)

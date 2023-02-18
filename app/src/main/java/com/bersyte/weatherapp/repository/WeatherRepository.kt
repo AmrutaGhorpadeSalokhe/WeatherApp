@@ -17,10 +17,12 @@ constructor(private val apiService: ApiService, private val dao: weatherDao) {
 
     suspend fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) = dao.addToFav(recFavWeatherModel)
 
-    suspend fun deleteFav(recFavWeatherModel: RecSearchFvWeatherModel) = dao.delete(recFavWeatherModel)
+    suspend fun removeFromFav(isFav: Boolean,id: Int) = dao.removeFromFav(isFav,id)
 
     suspend fun deleteAllFav() = dao.deleteAllFavRecords(true)
 
     suspend fun deleteAllRecSearch() = dao.deleteAllRecentSearch(true)
+
+    suspend fun getFavModel(id:Int) = dao.getFavouriteModel(id = id)
 
 }

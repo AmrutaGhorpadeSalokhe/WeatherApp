@@ -1,8 +1,10 @@
 package com.bersyte.weatherapp.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bersyte.weatherapp.R
@@ -59,7 +61,19 @@ class MainActivity : AppCompatActivity() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
-            CloseDialog().show(supportFragmentManager, "close_diag")
+          //  CloseDialog().show(supportFragmentManager, "close_diag")
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Do you want to exit ?")
+            builder.setTitle("Alert !")
+            builder.setCancelable(false)
+            builder.setPositiveButton("Yes",
+                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                    finish()
+                })
+            builder.setNegativeButton("No",
+                DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
+                    dialog.cancel()
+                } )
         }
     }
 }
