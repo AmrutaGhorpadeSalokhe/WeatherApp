@@ -51,7 +51,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
 
     private fun populateData() {
         binding.weatheViewModel=viewModel
-        viewModel.isOpenFromFav=isFavSearch
+        viewModel.setFav(isFavSearch)
         viewModel.getAllFavoriteCity(isFavSearch)
 
         viewModel.favResponse.observe(viewLifecycleOwner) { list ->

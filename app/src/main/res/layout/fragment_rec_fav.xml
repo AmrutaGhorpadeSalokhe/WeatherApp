@@ -32,7 +32,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
                 app:navigationIcon="@mipmap/icon_back_black"
-                app:title="@{weatheViewModel.openFromFav? @string/fav : @string/recentSearch}">
+                app:title="@{weatheViewModel.openFromFav ? @string/fav : @string/recentSearch}">
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchButton"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="20dp"
             android:gravity="center"
-            android:text="@{weatheViewModel.openFromFav? @string/no_fav_search : @string/no_recent_search"
+            android:text="@{weatheViewModel.openFromFav? @string/no_fav_search : @string/no_recent_search}"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:visibility="gone"
@@ -106,3 +106,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+    <!--
+            ="@{weatheViewModel.openFromFav ? @string/no_fav_search : @string/no_recent_search"
+    -->
