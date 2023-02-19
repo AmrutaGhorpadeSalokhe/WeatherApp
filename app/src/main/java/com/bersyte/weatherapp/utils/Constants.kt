@@ -6,7 +6,7 @@ object Constants {
     const val REMOVE_ONLY_FAV="only_fav"
     const val REMOVE_ALL_FAV="only_all_fav"
     const val REMOVE_ALL_SEARCH="only_all_search"
-
+    var IMG_URL = "https://openweathermap.org/img/w/";
     val cityList = arrayListOf<String>(
         "Adilabad",
         "Anantapur",
@@ -646,4 +646,6 @@ object Constants {
     "Purulia",
     "Uttar Dinajpur",
     )
+
+
 }

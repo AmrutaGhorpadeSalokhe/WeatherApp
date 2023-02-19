@@ -35,9 +35,10 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecFavBinding.inflate(inflater, container, false)
+        binding.weatheViewModel=viewModel
+        binding.lifecycleOwner = this
         populateData()
         return binding.root
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,6 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     }
 
     private fun populateData() {
-        binding.weatheViewModel=viewModel
         viewModel.setFav(isFavSearch)
         viewModel.getAllFavoriteCity(isFavSearch)
 
@@ -120,19 +120,6 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
             setListVisiblity(false)
 
         }
-
-
-        /* binding.listView.setOnItemClickListener { adapterView, view, i, l ->
-             hideKeyboardFrom(context!!,binding.root)
-             val fragment = HomeFragment()
-             val bundle = Bundle()
-             bundle.putString("city", cityList[i].toString())
-
-             fragment.arguments = bundle
-             (activity as MainActivity?)?.showCityWeather(fragment,bundle)
-
-             //(activity as MainActivity?)?.showFragment(HomeFragment(), false)
-         }*/
     }
 
     private fun showDialog(message: String): Boolean {
@@ -164,9 +151,12 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
 
     private fun setListVisiblity(visible: Boolean) {
         if (visible) {
+            binding.searchButton.visibility=View.GONE
             binding.iconNothingImageview.visibility = View.GONE
             binding.group.visibility = View.VISIBLE
+
         } else {
+            binding.searchButton.visibility=View.VISIBLE
             binding.iconNothingImageview.visibility = View.VISIBLE
             binding.group.visibility = View.GONE
         }
@@ -174,7 +164,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        _binding?.unbind()
     }
 
     override fun onItemClick(recFavWeatherModel: RecSearchFvWeatherModel, removeFlag: String) {

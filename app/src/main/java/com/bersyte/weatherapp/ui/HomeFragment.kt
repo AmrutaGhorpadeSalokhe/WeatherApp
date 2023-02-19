@@ -63,7 +63,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-
                     true
                 }
                 R.id.favCity -> {

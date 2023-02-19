@@ -1,18 +1,19 @@
 package com.bersyte.weatherapp.ui
 
-import android.opengl.Visibility
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.FragmentSearchBinding
 import com.bersyte.weatherapp.utils.Constants
 import com.bersyte.weatherapp.utils.hideKeyboardFrom
-import okhttp3.internal.notify
+import java.io.IOException
+import java.io.InputStream
 
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -21,7 +22,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val binding get() = _binding!!
     private lateinit var adapter: ArrayAdapter<String>
     val cityList = Constants.cityList
-   // var cityDumyList=ArrayList<String>()
+    //val fileInString: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,6 +41,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     }
     private fun setupListView() {
+        val fileInString: String =
+            context!!.assets.open("citylist.json").bufferedReader().use { it.readText() }
+
         adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, cityList)
         binding.listView.adapter = adapter
         binding.listView.visibility=View.INVISIBLE
@@ -47,9 +51,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.backButton.setOnClickListener {
             hideKeyboardFrom(context!!,binding.root)
             (activity as MainActivity?)?.showFragment(HomeFragment(), false)
-
         }
     }
+
 
     private fun setupSearchView() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,

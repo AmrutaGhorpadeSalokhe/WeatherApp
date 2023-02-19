@@ -43,15 +43,16 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:background="@android:color/transparent"
                 android:elevation="0dp">
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolBar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="match_parent"
                     app:navigationIcon="@mipmap/icon_menu_white"
                     android:background="@android:color/transparent">
                     <ImageView
@@ -62,17 +63,14 @@
                     <ImageButton
                         android:id="@+id/searchButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="end"
                         android:src="@mipmap/icon_search_white"
                         android:paddingEnd="20dp"
                         android:backgroundTint="@null"
                         android:background="@null"
                         android:paddingStart="10dp"
-                        />
-
-
-                </com.google.android.material.appbar.MaterialToolbar>
+                        /></com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
             <TextView
@@ -83,9 +81,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/cityTextView"
-                android:text="@{weatheViewModel.weatherResponse.name}"
-                android:textColor="@color/white"
-                />
+                setDate="@{weatheViewModel.weatherResponse.dt}"
+                android:textColor="@color/white" />
 
 
             <TextView
@@ -96,11 +93,14 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/favImageButton"
-                android:text="Udupi, Karnataka"
                 android:textColor="@color/white"
+                android:text="@{weatheViewModel.weatherResponse.name}"
                 android:textStyle="bold"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
+            <!--
+                        setCityState="@{Integer.toString(weatheViewModel.weatherResponse.timezone)}"
+            -->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/favImageButton"
                 android:layout_width="wrap_content"
@@ -110,19 +110,11 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/guideline"
                 android:text="Add to favourite"
-                app:setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
+                setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
                 android:background="?android:attr/selectableItemBackground"
                 app:iconTint="@color/white"
                 android:onClick="@{() -> weatheViewModel.addRemoveFav(weatheViewModel.recFavWeatherModel)}"
                 android:textColor="@color/white"/>
-
-<!--
-                            app:setIcon="@{model.isFav()}"
-
-            app:icon="@{(model.isFav==true) ? @mipmap/icon_favourite_active : @minmap/icon_favourite}"
--->
-
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
@@ -139,7 +131,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="15dp"
-                android:src="@mipmap/icon_clear_night"/>
+                sunrise="@{weatheViewModel.weatherResponse.sys.sunrise}"
+                sunset="@{weatheViewModel.weatherResponse.sys.sunset}" />
             <TextView
                 android:id="@+id/tempTextView"
                 android:layout_width="wrap_content"
@@ -147,7 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tempIcon"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="31 "
+                setFerCel="@{Double.toString(weatheViewModel.weatherResponse.main.temp)}"
                 android:textColor="@color/white"
                 android:layout_marginTop="15dp"
                 android:textStyle="bold"
@@ -158,7 +151,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tempTextView"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Mostly Sunny "
+                android:text="@{weatheViewModel.weatherResponse.weather[0].description}"
                 android:textColor="@color/white"
                 android:layout_marginTop="15dp"
                 android:textSize="20sp"/>
@@ -222,16 +215,18 @@
                         android:padding="5dp"
                         android:textSize="18sp"
                         android:textColor="@color/white"/>
+
                     <TextView
                         android:id="@+id/minMaxTempTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 22 - 34"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="20sp"
+                        max="@{Double.toString(weatheViewModel.weatherResponse.main.temp_max)}"
+                        min="@{Double.toString(weatheViewModel.weatherResponse.main.temp_min)}"
                         app:layout_constraintTop_toBottomOf="@id/minMaxTextView"
-                        app:layout_constraintStart_toEndOf="@id/iconImageView"/>
+                        app:layout_constraintStart_toEndOf="@id/iconImageView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -268,7 +263,7 @@
                         android:id="@+id/preciptionValueTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 0%"
+                        setPercentage="@{Integer.toString(weatheViewModel.weatherResponse.clouds.all)}"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="20sp"
@@ -310,7 +305,7 @@
                         android:id="@+id/humidityValueTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 47%"
+                        setPercentage="@{Integer.toString(weatheViewModel.weatherResponse.main.humidity)}"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="20sp"

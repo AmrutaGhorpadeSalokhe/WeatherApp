@@ -33,6 +33,7 @@ constructor(val repository: WeatherRepository) : ViewModel() {
     var recWeatherModelTemp = MutableLiveData<RecSearchFvWeatherModel>()
 
     var _isOpenFromFav=MutableLiveData<Boolean>()
+
     val isOpenFromFav:LiveData<Boolean>
     get() = _isOpenFromFav
 
