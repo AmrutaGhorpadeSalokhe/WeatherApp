@@ -68,11 +68,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 R.id.favCity -> {
                     binding.drawerLayout.closeDrawers()
-                    openFavFragment()
+                    openFavFragment(true)
                     true
                 }
                 R.id.recSearch -> {
-
+                    binding.drawerLayout.closeDrawers()
+                    openFavFragment(false)
                     true
 
                 }
@@ -82,9 +83,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
-    private fun openFavFragment(){
-        (activity as MainActivity?)?.showFragment(RecFavFragment(), true)
-
+    private fun openFavFragment(openFromFav:Boolean){
+        val fragment = RecFavFragment()
+        val bundle = Bundle()
+        bundle.putBoolean("openFromFav",openFromFav)
+        fragment.arguments = bundle
+        (activity as MainActivity?)?.showCityWeather(fragment, bundle)
     }
 
     private fun getWeather() {

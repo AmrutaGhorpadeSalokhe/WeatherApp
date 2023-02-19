@@ -31,14 +31,17 @@ interface weatherDao {
     @Delete
     suspend fun delete(recFavWeatherModel: RecSearchFvWeatherModel)
 
-    @Query("Update RecSearchFvWeatherModel SET isFav=isFav where id=:id")
+    @Query("Update RecSearchFvWeatherModel SET isFav=:isFav where id=:id")
     suspend fun removeFromFav(isFav: Boolean,id: Int)
 
-    @Query("Delete from RecSearchFvWeatherModel where isFav= :isFav")
+    @Query("Delete  from RecSearchFvWeatherModel where isFav= :isFav")
     suspend fun deleteAllFavRecords(isFav: Boolean)
 
-    @Query("Delete from RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
+    @Query("Delete  from RecSearchFvWeatherModel where isRecentSearch=:isRecentSearch")
     suspend fun deleteAllRecentSearch(isRecentSearch:Boolean)
+
+    @Query("Select * from RecSearchFvWeatherModel where cityName=:cityName ")
+    suspend fun checkItemPresent(cityName: String) :RecSearchFvWeatherModel
 
 
 }

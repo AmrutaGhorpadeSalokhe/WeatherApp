@@ -45,12 +45,15 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
         dataModelList = ArrayList()
         val bundle = this.arguments
         if (bundle != null) {
-            isFavSearch = bundle.getBoolean("isFavSearch")
+            isFavSearch = bundle.getBoolean("openFromFav")
         }
     }
 
     private fun populateData() {
-        viewModel.getAllFavoriteCity()
+        binding.weatheViewModel=viewModel
+        viewModel.isOpenFromFav=isFavSearch
+        viewModel.getAllFavoriteCity(isFavSearch)
+
         viewModel.favResponse.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
                 setListVisiblity(false)

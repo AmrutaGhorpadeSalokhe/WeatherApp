@@ -25,4 +25,6 @@ constructor(private val apiService: ApiService, private val dao: weatherDao) {
 
     suspend fun getFavModel(id:Int) = dao.getFavouriteModel(id = id)
 
+    suspend fun checkItemPresent(cityName: String) =dao.checkItemPresent(cityName)
+
 }

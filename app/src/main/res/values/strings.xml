@@ -13,4 +13,6 @@
     <string name="nav_close">Close</string>
     <string name="remodeAllFavString">Are you sure want to remove all the favourites?</string>
     <string name="remodeAllRecSearchString">Are you sure want to remove all the recent search?</string>
+    <string name="no_recent_search">No Recent Search</string>
+    <string name="no_fav_search">No Favourites added</string>
 </resources>
