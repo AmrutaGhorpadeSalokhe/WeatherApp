@@ -13,7 +13,6 @@
         <import type="android.R.attr" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -141,6 +140,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tempIcon" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -314,19 +314,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-        <!--<com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            android:background="@color/white"
-            app:iconTint="@color/colorPrimaryDark"
-            app:itemIconTint="#7d5593"
-            app:itemBackground="@drawable/ripple_effect"
-            app:menu="@menu/drawer_menu" />-->
             <com.google.android.material.navigation.NavigationView
                 android:id="@+id/navigationView"
                 android:layout_width="wrap_content"
