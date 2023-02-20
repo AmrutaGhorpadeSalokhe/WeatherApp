@@ -44,7 +44,8 @@ fun TextView.setPercentage(text: String) {
 @BindingAdapter("setFerCel")
 fun TextView.setFerCel(text: String) {
     val toDegree=text.toFloat().minus( 273.15).roundToInt()
-    this.text = "$toDegree \u2103 \u2109"
+   /* ℃ ℉*/
+    this.text = "$toDegree"
 
 }
 

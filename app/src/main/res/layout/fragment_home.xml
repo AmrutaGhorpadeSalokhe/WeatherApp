@@ -136,12 +136,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
+                    android:textSize="50sp"
                     android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/degreeLayout"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tempIcon" />
 
+                <include
+                    android:id="@+id/degreeLayout"
+                    layout="@layout/degree_celcius_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/tempTextView"
+                    app:layout_constraintTop_toBottomOf="@id/tempIcon" />
 
                 <TextView
                     android:layout_width="wrap_content"
