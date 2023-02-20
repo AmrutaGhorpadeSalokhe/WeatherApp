@@ -15,16 +15,20 @@ constructor(private val apiService: ApiService, private val dao: weatherDao) {
 
     suspend fun getAllFavCity(isFav: Boolean) = dao.getAllFavourite(isFav)
 
-    suspend fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) = dao.addToFav(recFavWeatherModel)
+    suspend fun addToFav(recFavWeatherModel: RecSearchFvWeatherModel) =
+        dao.addToFav(recFavWeatherModel)
 
-    suspend fun removeFromFav(isFav: Boolean,id: Int) = dao.removeFromFav(isFav,id)
+    suspend fun addToRecentSearch(recFavWeatherModel: RecSearchFvWeatherModel) =
+        dao.addToRecentSearch(recFavWeatherModel)
+
+    suspend fun updateFavFlag(isFav: Boolean, id: Int) = dao.updateFavFlag(isFav, id)
 
     suspend fun deleteAllFav() = dao.deleteAllFavRecords(true)
 
     suspend fun deleteAllRecSearch() = dao.deleteAllRecentSearch(true)
 
-    suspend fun getFavModel(id:Int) = dao.getFavouriteModel(id = id)
+    suspend fun getFavModel(id: Int) = dao.getFavouriteModel(id = id)
 
-    suspend fun checkItemPresent(cityName: String) =dao.checkItemPresent(cityName)
-
+    suspend fun checkItemPresent(cityName: String) = dao.checkItemPresent(cityName)
+    suspend fun update(recFavWeatherModel: RecSearchFvWeatherModel) = dao.update(recFavWeatherModel)
 }

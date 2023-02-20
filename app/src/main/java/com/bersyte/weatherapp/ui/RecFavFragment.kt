@@ -53,24 +53,24 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     private fun populateData() {
         viewModel.setFav(isFavSearch)
         viewModel.getAllFavoriteCity(isFavSearch)
-
+        val llm = LinearLayoutManager(context)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        myRecyclerViewAdapter = FavouriteRecentSearchAdapter(dataModelList, this)
+        binding.recyclerView.layoutManager = llm
+        binding.recyclerView.adapter = myRecyclerViewAdapter
         viewModel.favResponse.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
                 setListVisiblity(false)
             } else {
-                val llm: LinearLayoutManager = LinearLayoutManager(context)
-                llm.orientation = LinearLayoutManager.VERTICAL
-                myRecyclerViewAdapter = FavouriteRecentSearchAdapter(dataModelList, this)
-                binding.recyclerView.layoutManager = llm
-                binding.recyclerView.adapter = myRecyclerViewAdapter
+                dataModelList.clear()
                 dataModelList.addAll(list)
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+                myRecyclerViewAdapter.notifyDataSetChanged()
                 setListVisiblity(true)
             }
-
         }
+
         binding.toolBar.setNavigationOnClickListener {
-            hideKeyboardFrom(context!!,binding.root)
+            hideKeyboardFrom(context!!, binding.root)
             (activity as MainActivity?)?.showFragment(HomeFragment(), false)
         }
         setupSearchView()
@@ -109,54 +109,54 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
         binding.removeAllText.setOnClickListener {
 
             if (isFavSearch) {
-                if (showDialog(getString(com.bersyte.weatherapp.R.string.remodeAllFavString))) {
-                    viewModel.deleteAllFav()
-                }
+                showDialog(
+                    getString(com.bersyte.weatherapp.R.string.remodeAllFavString),
+                    isFavSearch
+                )
             } else {
-                if (showDialog(getString(com.bersyte.weatherapp.R.string.remodeAllRecSearchString))) {
-                    viewModel.deleteAllRecentSearch()
-                }
+                showDialog(
+                    getString(com.bersyte.weatherapp.R.string.remodeAllRecSearchString),
+                    isFavSearch
+                )
             }
-            setListVisiblity(false)
-
         }
     }
 
-    private fun showDialog(message: String): Boolean {
-        /* val builder = AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
-        builder.setTitle("Dialog")
-
-        builder.setMessage(message)
-        builder.setPositiveButton("OK", null)
-        builder.setNegativeButton("Cancel", null)
-        builder.show()*/
+    private fun showDialog(message: String, isFavSearch: Boolean): Boolean {
         var showDialog: Boolean = false
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(activity)
         builder.setMessage(message)
         builder.setTitle("Alert !")
         builder.setCancelable(false)
         builder.setPositiveButton(
-            "Yes"
+            getString(R.string.yes)
         ) { dialog: DialogInterface?, _: Int ->
-            showDialog = true
+            if (isFavSearch) {
+                viewModel.deleteAllFav()
+                setListVisiblity(false)
+            } else {
+                viewModel.deleteAllRecentSearch()
+                setListVisiblity(false)
+            }
         }
         builder.setNegativeButton(
-            "No"
+            getString(R.string.no)
         ) { dialog: DialogInterface, _: Int ->
             showDialog = false
             dialog.cancel()
-        }
+        }.show()
+
         return showDialog
     }
 
     private fun setListVisiblity(visible: Boolean) {
         if (visible) {
-            binding.searchButton.visibility=View.GONE
+            binding.searchButton.visibility = View.VISIBLE
             binding.iconNothingImageview.visibility = View.GONE
             binding.group.visibility = View.VISIBLE
 
         } else {
-            binding.searchButton.visibility=View.VISIBLE
+            binding.searchButton.visibility = View.GONE
             binding.iconNothingImageview.visibility = View.VISIBLE
             binding.group.visibility = View.GONE
         }
@@ -170,11 +170,28 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     override fun onItemClick(recFavWeatherModel: RecSearchFvWeatherModel, removeFlag: String) {
         when (removeFlag) {
             REMOVE_ONLY_FAV -> {
-                    viewModel.addRemoveFav(recFavWeatherModel)
+                val tempModel: RecSearchFvWeatherModel
+                if (recFavWeatherModel.isFav!!) {
+                    tempModel = RecSearchFvWeatherModel(
+                        id = recFavWeatherModel.id,
+                        cityName = recFavWeatherModel.cityName,
+                        cityTempInDegree = recFavWeatherModel.cityTempInDegree,
+                        cityTempInWords = recFavWeatherModel.cityTempInWords,
+                        isFav = false,
+                        isRecentSearch = recFavWeatherModel.isRecentSearch
+                    )
+                } else {
+                    tempModel = RecSearchFvWeatherModel(
+                        id = recFavWeatherModel.id,
+                        cityName = recFavWeatherModel.cityName,
+                        cityTempInDegree = recFavWeatherModel.cityTempInDegree,
+                        cityTempInWords = recFavWeatherModel.cityTempInWords,
+                        isFav = true,
+                        isRecentSearch = recFavWeatherModel.isRecentSearch
+                    )
+                }
+                viewModel.addRemoveFav(tempModel, isFavSearch)
             }
         }
-
     }
-
-
 }

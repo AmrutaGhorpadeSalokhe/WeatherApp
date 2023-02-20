@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-
         <variable
             name="weatheViewModel"
             type="com.bersyte.weatherapp.viewmodel.WeatherViewModel" />
-
         <import type="android.R.attr" />
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/background_android"
-        tools:context=".ui.FavouriteFragment">
+        android:background="@mipmap/background_android">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -56,18 +50,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="6 City added as favourite"
+            isFromFav="@{weatheViewModel.isOpenFromFav()}"
+            size="@{weatheViewModel.cityListSize}"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/removeAllText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Remove All"
+            android:text="@{weatheViewModel.isOpenFromFav() ? @string/remove_All : @string/clear_All}"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"

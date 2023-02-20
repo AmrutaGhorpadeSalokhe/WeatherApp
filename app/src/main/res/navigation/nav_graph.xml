@@ -45,11 +45,9 @@
 
     <fragment
         android:id="@+id/favFragment"
-        android:name="com.bersyte.weatherapp.ui.FavouriteFragment"
+        android:name="com.bersyte.weatherapp.ui.RecFavFragment"
         android:label="FavouriteRecentSearchFragment"
         tools:layout="@layout/fragment_favourite" />
-
-    <!--  </fragment>-->
 
 
 </navigation>

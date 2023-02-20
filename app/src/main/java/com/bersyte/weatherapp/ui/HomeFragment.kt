@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,8 +22,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WeatherViewModel by viewModels()
-    private var searchedcCity = "Kolhapur"
-    var actionBarDrawerToggle: ActionBarDrawerToggle? = null
+    private var searchedcCity = "Udupi, karnataka"
+    var isFromSearch = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,14 +36,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initUI()
         getWeather()
         return binding.root
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val bundle = this.arguments
         if (bundle != null) {
-            //get city details
+            isFromSearch = true
             searchedcCity = bundle.getString("city").toString()
         }
     }
@@ -79,7 +79,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 else -> false
             }
         }
-
     }
 
     private fun openFavFragment(openFromFav:Boolean){
@@ -91,33 +90,65 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun getWeather() {
-        viewModel.getCityWeather(searchedcCity)
+        val mString = searchedcCity.split(",").toTypedArray()
+        viewModel.getCityWeather(mString[0])
         viewModel.weatherResponse.observe(viewLifecycleOwner) { weatherData ->
             binding.apply {
-                val recFavWeatherModel=RecSearchFvWeatherModel(
-                    id=0,
-                    cityName = weatherData.name,
+                //val tempInDegree=weatherData.weather[0].main-273.15
+                val recFavWeatherModel = RecSearchFvWeatherModel(
+                    id = 0,
+                    cityName = searchedcCity,
                     cityTempInDegree = weatherData.weather[0].main,
                     cityTempInWords = weatherData.weather[0].description,
-                    isFav = true,
-                    isRecentSearch = true
+                    isFav = false,
+                    isRecentSearch = isFromSearch
                 )
-               // binding.model=recFavWeatherModel
-
+                viewModel.addToRecentSearch(recFavWeatherModel)
+                binding.tempIcon.setWeatherImage(weatherData.weather[0].description)
             }
-            /*  binding.apply {
-                  tvCityName.text = "Luanda"
-                  tvDescription.text = weather.description
-                  tvTemperature.text = weather.temperature
-                  tvWind.text = weather.wind
+        }
+    }
 
-                  val forecast = weather.forecast
-                  tvForecast1.text = "${forecast[0].temperature}/ ${forecast[0].wind}"
-                  tvForecast2.text = "${forecast[1].temperature}/ ${forecast[1].wind}"
-                  tvForecast3.text = "${forecast[2].temperature}/ ${forecast[2].wind}"
-
-              }*/
-
+    fun ImageView.setWeatherImage(description: String) {
+        if (description.isNotEmpty()) {
+            when (description) {
+                "clear sky" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                    return
+                }
+                "few clouds" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_partly_cloudy_small))
+                    return
+                }
+                "scattered clouds" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_cloudy_small))
+                    return
+                }
+                "shower rain" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                    return
+                }
+                "rain" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                    return
+                }
+                "thunderstorm" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_thunderstorm_small))
+                    return
+                }
+                "snow" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                    return
+                }
+                "mist" -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                    return
+                }
+                else -> {
+                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                    return
+                }
+            }
         }
     }
 

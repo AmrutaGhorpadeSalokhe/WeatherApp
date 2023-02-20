@@ -29,8 +29,6 @@ class FavouriteFragment : Fragment(R.layout.fragment_favourite),OnItemSelected {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
-       // _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
-
         _binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_favourite, container, false)
         binding.adapter=myRecyclerViewAdapter

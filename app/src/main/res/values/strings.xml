@@ -15,4 +15,9 @@
     <string name="remodeAllRecSearchString">Are you sure want to remove all the recent search?</string>
     <string name="no_recent_search">No Recent Search</string>
     <string name="no_fav_search">No Favourites added</string>
+    <string name="remove_All">Remove All</string>
+    <string name="clear_All">Clear All</string>
+    <string name="india">  India</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

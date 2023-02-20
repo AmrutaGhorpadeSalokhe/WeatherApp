@@ -1,206 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
+
     <data>
 
         <variable
             name="weatheViewModel"
             type="com.bersyte.weatherapp.viewmodel.WeatherViewModel" />
 
-       <!-- <variable
-            name="model"
-            type="com.bersyte.weatherapp.viewmodel.WeatherViewModel.recFavWeatherModel" />
--->
-        <import type="android.R.attr"/>
+        <import type="android.view.View" />
 
+        <import type="android.R.attr" />
     </data>
 
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/homeBG"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:background="@mipmap/background_android"
-    android:layout_height="match_parent">
-
-
-
-
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/homeBG"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText">
+        android:background="@mipmap/background_android">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@android:color/transparent"
-                android:elevation="0dp">
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:navigationIcon="@mipmap/icon_menu_white"
-                    android:background="@android:color/transparent">
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@mipmap/logo"
-                        android:layout_gravity="center_vertical|top"/>
-                    <ImageButton
-                        android:id="@+id/searchButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:src="@mipmap/icon_search_white"
-                        android:paddingEnd="20dp"
-                        android:backgroundTint="@null"
-                        android:background="@null"
-                        android:paddingStart="10dp"
-                        /></com.google.android.material.appbar.MaterialToolbar>
-            </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText">
 
-            <TextView
-                android:id="@+id/dateAndTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/cityTextView"
-                setDate="@{weatheViewModel.weatherResponse.dt}"
-                android:textColor="@color/white" />
-
-
-            <TextView
-                android:id="@+id/cityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/favImageButton"
-                android:textColor="@color/white"
-                android:text="@{weatheViewModel.weatherResponse.name}"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-            <!--
-                        setCityState="@{Integer.toString(weatheViewModel.weatherResponse.timezone)}"
-            -->
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/favImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/guideline"
-                android:text="Add to favourite"
-                setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
-                android:background="?android:attr/selectableItemBackground"
-                app:iconTint="@color/white"
-                android:onClick="@{() -> weatheViewModel.addRemoveFav(weatheViewModel.recFavWeatherModel)}"
-                android:textColor="@color/white"/>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/guideline"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4"/>
-
-            <ImageView
-                android:id="@+id/tempIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/guideline"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="15dp"
-                sunrise="@{weatheViewModel.weatherResponse.sys.sunrise}"
-                sunset="@{weatheViewModel.weatherResponse.sys.sunset}" />
-            <TextView
-                android:id="@+id/tempTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tempIcon"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                setFerCel="@{Double.toString(weatheViewModel.weatherResponse.main.temp)}"
-                android:textColor="@color/white"
-                android:layout_marginTop="15dp"
-                android:textStyle="bold"
-                android:textSize="30sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tempTextView"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:text="@{weatheViewModel.weatherResponse.weather[0].description}"
-                android:textColor="@color/white"
-                android:layout_marginTop="15dp"
-                android:textSize="20sp"/>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bottomGuideline"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.8"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white"
-                android:id="@+id/view"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottomGuideline"
-                />
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                app:layout_constraintTop_toBottomOf="@id/bottomGuideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_height="match_parent">
 
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appBarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/toolBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        app:navigationIcon="@mipmap/icon_menu_white">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_vertical|top"
+                            android:src="@mipmap/logo" />
+
+                        <ImageButton
+                            android:id="@+id/searchButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:background="@null"
+                            android:backgroundTint="@null"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:src="@mipmap/icon_search_white" />
+                    </com.google.android.material.appbar.MaterialToolbar>
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <TextView
+                    android:id="@+id/dateAndTimeTextView"
+                    setDate="@{weatheViewModel.weatherResponse.dt}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/firstLayout"
-                    app:layout_constraintVertical_chainStyle="spread"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/secondLayout"
-                    app:layout_constraintLeft_toLeftOf="parent">
+                    android:layout_marginBottom="15dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/cityTextView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/iconImageView"
+
+                <TextView
+                    android:id="@+id/cityTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="@{weatheViewModel.recFavWeatherModel.cityName}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/favImageButton"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/favImageButton"
+                    setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{() -> weatheViewModel.addRemoveFromFav(weatheViewModel.recFavWeatherModel)}"
+                    android:text="Add to favourite"
+                    android:textColor="@color/white"
+                    app:iconTint="@color/white"
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toTopOf="@id/guideline"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.4" />
+
+                <ImageView
+                    android:id="@+id/tempIcon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@mipmap/icon_clear_night"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline" />
+
+                <TextView
+                    android:id="@+id/tempTextView"
+                    setFerCel="@{Double.toString(weatheViewModel.weatherResponse.main.temp)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tempIcon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@{weatheViewModel.weatherResponse.weather[0].description}"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tempTextView" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/bottomGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.8" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bottomGuideline" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bottomLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/bottomGuideline">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/firstLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:src="@mipmap/icon_temperature_info"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/secondLayout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="spread">
+
+                        <ImageView
+                            android:id="@+id/iconImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:src="@mipmap/icon_temperature_info"
                         app:layout_constraintEnd_toStartOf="@+id/minMaxTextView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -320,7 +316,6 @@
 
 
 
-
         <!--<com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
             android:layout_width="wrap_content"
@@ -332,15 +327,32 @@
             app:itemIconTint="#7d5593"
             app:itemBackground="@drawable/ripple_effect"
             app:menu="@menu/drawer_menu" />-->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="wrap_content"
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:fitsSystemWindows="true"
+                app:menu="@menu/drawer_menu" />
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/drawer_menu" />
-    </androidx.drawerlayout.widget.DrawerLayout>
+            android:background="@color/whiteOpaq"
+            android:visibility="@{weatheViewModel.showProgressBarUserInfo ? View.VISIBLE : View.GONE}">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

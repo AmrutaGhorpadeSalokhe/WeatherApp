@@ -32,7 +32,7 @@
             android:paddingBottom="10dp"
             android:text="@{model.cityName}"
             android:textColor="@color/orange"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/verticleGuideline"
@@ -48,13 +48,14 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintRight_toLeftOf="@id/tempInDegreeTextView"
             app:layout_constraintStart_toStartOf="parent"
+            setWeatherImage="@{model.cityTempInWords}"
             app:layout_constraintTop_toBottomOf="@id/cityNameTextView" />
 
         <TextView
             android:id="@+id/tempInDegreeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.cityTempInDegree}"
+            setFerCel="@{model.cityTempInDegree}"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -70,7 +71,7 @@
             android:layout_height="wrap_content"
             android:text="@{model.cityTempInWords}"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toRightOf="@id/tempInDegreeTextView"
@@ -84,12 +85,13 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.6" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/favIconImageButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="?android:selectableItemBackground"
-            android:src="@mipmap/icon_favourite"
+            setIcon="@{model.isFav()}"
+            android:background="?android:attr/selectableItemBackground"
+            app:iconTint="@color/white"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

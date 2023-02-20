@@ -18,9 +18,9 @@ class WeatherViewModel
 constructor(val repository: WeatherRepository) : ViewModel() {
 
     private val _response = MutableLiveData<WeatherDataModel>()
+
     val weatherResponse: LiveData<WeatherDataModel>
         get() = _response
-
 
     private val _favCity = MutableLiveData<ArrayList<RecSearchFvWeatherModel>>()
     val favResponse: LiveData<ArrayList<RecSearchFvWeatherModel>>
@@ -32,15 +32,22 @@ constructor(val repository: WeatherRepository) : ViewModel() {
 
     var recWeatherModelTemp = MutableLiveData<RecSearchFvWeatherModel>()
 
-    var _isOpenFromFav=MutableLiveData<Boolean>()
+    var _isOpenFromFav = MutableLiveData<Boolean>()
 
-    val isOpenFromFav:LiveData<Boolean>
-    get() = _isOpenFromFav
+    val isOpenFromFav: LiveData<Boolean>
+        get() = _isOpenFromFav
 
-    fun setFav(openFromFav:Boolean){
-        _isOpenFromFav.postValue(openFromFav)
+    val showProgressBarUserInfo: MutableLiveData<Boolean> = MutableLiveData()
+
+    var cityListSize: MutableLiveData<Int> = MutableLiveData()
+
+    init {
+        showProgressBarUserInfo.value = true
     }
 
+    fun setFav(openFromFav: Boolean) {
+        _isOpenFromFav.postValue(openFromFav)
+    }
 
     fun getCityWeather(cityName: String?) {
         getWeather(cityName!!)
@@ -48,64 +55,61 @@ constructor(val repository: WeatherRepository) : ViewModel() {
 
     private fun getWeather(cityName: String) = viewModelScope.launch {
         repository.getWeather(cityName).let { response ->
-
             if (response.isSuccessful) {
                 _response.postValue(response.body())
-                //check if item present in room and theN Get from local
-                repository.checkItemPresent(response.body()!!.name).let { res ->
-
-                        val tempObj = RecSearchFvWeatherModel(
-                            id = 0,
-                            cityName = response.body()!!.name,
-                            cityTempInDegree = response.body()!!.weather[0].main,
-                            cityTempInWords = response.body()!!.weather[0].description,
-                            isFav = true,
-                            isRecentSearch = true
-                        )
-                    if(res!=null) {
-                        _recFavWeatherModel.postValue(res)
-                    }else{
-                        _recFavWeatherModel.postValue(tempObj)
-                    }
-
-                    //recWeatherModelTemp.postValue(tempObj)
-
-                }
             } else {
                 Log.d("tag", "getWeather Error: ${response.code()}")
             }
         }
     }
 
-    fun addRemoveFav(recFavWeatherModel: RecSearchFvWeatherModel) = viewModelScope.launch {
+    fun addRemoveFav(recFavWeatherModel: RecSearchFvWeatherModel, isFavSearch: Boolean) =
+        viewModelScope.launch {
+            repository.update(recFavWeatherModel).let {
+                getAllFavoriteCity(isFavSearch)
+            }
+        }
+
+    fun addRemoveFromFav(recFavWeatherModel: RecSearchFvWeatherModel) = viewModelScope.launch {
         if (!recFavWeatherModel.isFav!!) {
-            repository.addToFav(recFavWeatherModel)
+            repository.updateFavFlag(true, recFavWeatherModel.id)
         } else {
-            repository.removeFromFav(false, recFavWeatherModel.id)
+            repository.updateFavFlag(false, recFavWeatherModel.id)
         }
         repository.getFavModel(recFavWeatherModel.id).let { res ->
             _recFavWeatherModel.postValue(res)
         }
-
     }
 
-    fun getAllFavoriteCity(isFavSearch:Boolean) = viewModelScope.launch {
-        if(isFavSearch) {
+    fun addToRecentSearch(recFavWeatherModel: RecSearchFvWeatherModel) =
+        viewModelScope.launch {
+            repository.addToRecentSearch(recFavWeatherModel).let {
+                repository.checkItemPresent(recFavWeatherModel.cityName!!).let { res ->
+                    _recFavWeatherModel.postValue(res)
+                    showProgressBarUserInfo.value = false
+                }
+            }
+        }
+
+
+    fun getAllFavoriteCity(isFavSearch: Boolean) = viewModelScope.launch {
+        var resList = ArrayList<RecSearchFvWeatherModel>()
+
+        if (isFavSearch) {
             repository.getAllFavCity(true).let { res ->
-                val resList = res as ArrayList
+                resList = res as ArrayList
                 _favCity.postValue(resList)
             }
-        }else{
+        } else {
             repository.getAllRecentSearch(true).let { res ->
-                val resList = res as ArrayList
+                resList = res as ArrayList
                 _favCity.postValue(resList)
             }
         }
+        if (resList.isNotEmpty()) {
+            cityListSize.postValue(resList.size)
+        }
     }
-
-    /*fun deleteFav(recWeatherRepository: RecSearchFvWeatherModel) =viewModelScope.launch {
-        repository.(recWeatherRepository)
-    }*/
 
     fun deleteAllFav()=viewModelScope.launch {
         repository.deleteAllFav()

@@ -1,6 +1,5 @@
 package com.bersyte.weatherapp.ui
 
-import android.graphics.ColorSpace.Model
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,7 +14,7 @@ import java.util.*
 
 class FavouriteRecentSearchAdapter(
     var weatherList: ArrayList<RecSearchFvWeatherModel>,
-    var onItemClick: OnItemSelected
+    var onItemClick: OnItemSelected,
 ) : RecyclerView.Adapter<FavouriteRecentSearchAdapter.AdapterViewHolder>() {
 
     var arrayList = ArrayList<RecSearchFvWeatherModel>()
@@ -28,6 +27,7 @@ class FavouriteRecentSearchAdapter(
             LayoutInflater.from(parent.context), R.layout.favourite_adapter_layout, parent, false
         )
         arrayList.addAll(weatherList)
+
         return AdapterViewHolder(binding)
     }
 
@@ -38,7 +38,6 @@ class FavouriteRecentSearchAdapter(
             onItemClick.onItemClick(weatherList[position],REMOVE_ONLY_FAV)
         }
     }
-    //02312641099
 
 
     override fun getItemCount(): Int {

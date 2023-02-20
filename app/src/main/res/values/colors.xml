@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#4682B4</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="whiteOpaq">#1AFFFFFF</color>
     <color name="adapterbackground">#1A4682B4</color>
-    <color name="orange">#e28743</color>
+    <color name="orange">#FFE539</color>
 </resources>

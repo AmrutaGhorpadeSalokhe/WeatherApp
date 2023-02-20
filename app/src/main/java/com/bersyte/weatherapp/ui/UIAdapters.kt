@@ -4,10 +4,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bersyte.weatherapp.R
-import com.bersyte.weatherapp.utils.Constants.IMG_URL
-import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import java.util.*
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 @BindingAdapter("setIcon")
 fun MaterialButton.setIcon(isFav:Boolean?){
@@ -16,7 +16,6 @@ fun MaterialButton.setIcon(isFav:Boolean?){
             this.icon = resources.getDrawable(R.mipmap.icon_favourite_active)
         } else {
             this.icon = resources.getDrawable(R.mipmap.icon_favourite)
-
         }
     } else {
         this.icon = resources.getDrawable(R.mipmap.icon_favourite)
@@ -27,66 +26,78 @@ fun MaterialButton.setIcon(isFav:Boolean?){
 fun TextView.setDate(time: Long) {
     val cal = Calendar.getInstance(Locale.ENGLISH)
     cal.timeInMillis = time * 1000
-
-    this.text = android.text.format.DateFormat.format("EEE, d MMM yyyy HH:mm:ss", cal).toString()
+    this.text = android.text.format.DateFormat.format("EEE, d MMM yyyy   HH:mm aa", cal).toString()
 }
 
 @BindingAdapter("min","max")
 fun TextView.setMinMax(min:String,max:String){
-    this.text="$min\u00B0-$max\u00B0"
-   /* val tz : TimeZone=timezone"\u00B0
-    System.out.println(
-        "TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT)
-            .toString() + " Timezone id :: " + tz.id
-    )*/
-    //val tz:TimeZone = TimeZone.getTimeZone(timezone)
-   // val cal = Calendar.getInstance(Locale.ENGLISH)
-   // this.text= tz.id
-    //this.text=cal.timeZone.id
-
-
+    val minDegree=min.toFloat().minus(273.15).roundToInt()
+    val maxDegree=max.toFloat().minus(273.15).roundToInt()
+    this.text="$minDegree\u00B0-$maxDegree\u00B0"
 }
 
 @BindingAdapter("setPercentage")
-fun TextView.setPercentage(text:String){
-    this.text="$text %"
+fun TextView.setPercentage(text: String) {
+    this.text = "$text %"
 }
 
 @BindingAdapter("setFerCel")
-fun TextView.setFerCel(text:String){
-    this.text="$text \u2103 \u2109"
+fun TextView.setFerCel(text: String) {
+    val toDegree=text.toFloat().minus( 273.15).roundToInt()
+    this.text = "$toDegree \u2103 \u2109"
 
 }
-@BindingAdapter("sunrise","sunset")
-fun ImageView.setIcon(sunrise: Long,sunset:Long) {
-    val currentTime=Date().time
-    return if (currentTime in sunrise until sunset) {
-        this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+
+@BindingAdapter("isFromFav", "size")
+fun TextView.setCitySizeText(isFromFav: Boolean, size: Int) {
+    if (isFromFav) {
+        this.text = "$size City added as favourite"
     } else {
-        this.setImageDrawable(resources.getDrawable(R.mipmap.icon_clear_night))
+        this.text = "You recently searched for"
     }
 }
-/*
 
-http://openweathermap.org/img/w/10d.png
-                app:setIcon="@{weatheViewModel.recFavWeatherModel.isFav()}"
-*/
-/*
+@BindingAdapter("setWeatherImage")
+fun ImageView.setWeatherImage(description: String) {
+    if (description.isNotEmpty()) {
+        when (description) {
+            "clear sky" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                return
+            }
+            "few clouds" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_partly_cloudy_small))
+                return
+            }
+            "scattered clouds" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_cloudy_small))
+                return
+            }
+            "shower rain" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                return
+            }
+            "rain" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                return
+            }
+            "thunderstorm" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_thunderstorm_small))
+                return
+            }
+            "snow" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                return
+            }
+            "mist" -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                return
+            }
+            else -> {
+                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                return
+            }
 
-val items = TimeZone.getAvailableIDs().map { id ->
-    // val timeZone = TimeZone.getTimeZone(id)
-    // val name = timeZone.displayName
-    val zone = ZoneId.of(id);
-    val offsetToday = OffsetDateTime.now(zone).offset
-    val offset = offsetFormatter.format(offsetToday)    // GMT
-    val tokens = id.replace("_", " ").split("/")
-    val name = if (tokens.size == 2) {
-        val (country, city) = tokens
-        "$city ($country)"
+        }
     }
-    else id
-    TimezoneView(id, name = name, offsetName = offset, offset = offsetToday.totalSeconds)
 }
-class TimezoneView(val id: String, val name: String, val offsetName: String, offset: Int)
-*/
-
