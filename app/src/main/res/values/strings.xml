@@ -20,4 +20,6 @@
     <string name="india">  India</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="exit_message">Do you want to exit ?</string>
+    <string name="alert">Alert !</string>
 </resources>

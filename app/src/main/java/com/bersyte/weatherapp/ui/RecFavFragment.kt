@@ -9,15 +9,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.FragmentRecFavBinding
 import com.bersyte.weatherapp.db.RecSearchFvWeatherModel
 import com.bersyte.weatherapp.listner.OnItemSelected
+import com.bersyte.weatherapp.utils.Constants
 import com.bersyte.weatherapp.utils.Constants.REMOVE_ONLY_FAV
 import com.bersyte.weatherapp.utils.hideKeyboardFrom
 import com.bersyte.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -29,6 +32,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     private val viewModel: WeatherViewModel by viewModels()
     lateinit var myRecyclerViewAdapter: FavouriteRecentSearchAdapter
     private var isFavSearch = true
+    private lateinit var filterList: ArrayList<RecSearchFvWeatherModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,18 +48,21 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataModelList = ArrayList()
+        filterList = ArrayList()
         val bundle = this.arguments
         if (bundle != null) {
-            isFavSearch = bundle.getBoolean("openFromFav")
+            isFavSearch = bundle.getBoolean(Constants.OPEN_FROM_FAV)
         }
     }
 
     private fun populateData() {
         viewModel.setFav(isFavSearch)
-        viewModel.getAllFavoriteCity(isFavSearch)
+        lifecycleScope.launch {
+            viewModel.getAllFavoriteCity(isFavSearch)
+        }
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.VERTICAL
-        myRecyclerViewAdapter = FavouriteRecentSearchAdapter(dataModelList, this)
+        myRecyclerViewAdapter = FavouriteRecentSearchAdapter(dataModelList, this,filterList)
         binding.recyclerView.layoutManager = llm
         binding.recyclerView.adapter = myRecyclerViewAdapter
         viewModel.favResponse.observe(viewLifecycleOwner) { list ->
@@ -64,6 +71,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
             } else {
                 dataModelList.clear()
                 dataModelList.addAll(list)
+                filterList.addAll(list)
                 myRecyclerViewAdapter.notifyDataSetChanged()
                 setListVisiblity(true)
             }
@@ -71,7 +79,7 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
 
         binding.toolBar.setNavigationOnClickListener {
             hideKeyboardFrom(context!!, binding.root)
-            (activity as MainActivity?)?.showFragment(HomeFragment(), false)
+            (activity as MainActivity?)?.onBackPressed()
         }
         setupSearchView()
     }
@@ -154,7 +162,6 @@ class RecFavFragment : Fragment(R.layout.fragment_rec_fav), OnItemSelected {
             binding.searchButton.visibility = View.VISIBLE
             binding.iconNothingImageview.visibility = View.GONE
             binding.group.visibility = View.VISIBLE
-
         } else {
             binding.searchButton.visibility = View.GONE
             binding.iconNothingImageview.visibility = View.VISIBLE

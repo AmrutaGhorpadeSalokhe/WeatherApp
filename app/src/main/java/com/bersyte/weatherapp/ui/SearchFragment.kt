@@ -43,7 +43,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.listView.visibility=View.INVISIBLE
         binding.backButton.setOnClickListener {
             hideKeyboardFrom(context!!,binding.root)
-            (activity as MainActivity?)?.showFragment(HomeFragment(), false)
+            (activity as MainActivity?)?.onBackPressed()
         }
     }
 
@@ -83,7 +83,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val item= binding.listView.adapter.getItem(i)
             bundle.putString("city", item.toString())
             fragment.arguments = bundle
-            (activity as MainActivity?)?.showCityWeather(fragment,bundle)
+            (activity as MainActivity?)?.showCityWeather(fragment,bundle,Constants.SEARCH_TAG)
         }
     }
 

@@ -15,9 +15,9 @@ import java.util.*
 class FavouriteRecentSearchAdapter(
     var weatherList: ArrayList<RecSearchFvWeatherModel>,
     var onItemClick: OnItemSelected,
+    var arrayList: ArrayList<RecSearchFvWeatherModel>
 ) : RecyclerView.Adapter<FavouriteRecentSearchAdapter.AdapterViewHolder>() {
 
-    var arrayList = ArrayList<RecSearchFvWeatherModel>()
 
     class AdapterViewHolder(val binding: FavouriteAdapterLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -26,12 +26,11 @@ class FavouriteRecentSearchAdapter(
         val binding: FavouriteAdapterLayoutBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context), R.layout.favourite_adapter_layout, parent, false
         )
-        arrayList.addAll(weatherList)
-
         return AdapterViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
+
         holder.binding.model = weatherList[position]
         holder.binding.executePendingBindings()
         holder.binding.favIconImageButton.setOnClickListener {
@@ -41,7 +40,7 @@ class FavouriteRecentSearchAdapter(
 
 
     override fun getItemCount(): Int {
-        return if (weatherList!!.isNotEmpty()) {
+        return if (weatherList.isNotEmpty()) {
             weatherList.size
         } else {
             0
@@ -53,13 +52,11 @@ class FavouriteRecentSearchAdapter(
         charText = charText?.lowercase(Locale.getDefault())
         weatherList.clear()
         if (charText!!.isEmpty()) {
-            //if (weatherList.size != arrayList.size) {
             weatherList.addAll(arrayList)
-            //}
         } else {
             for (model in arrayList) {
                 if (model.cityName?.toLowerCase(Locale.getDefault())
-                    !!.contains(charText!!)
+                    !!.contains(charText)
                 ) {
                     weatherList.add(model)
                 }

@@ -9,11 +9,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.FragmentHomeBinding
 import com.bersyte.weatherapp.db.RecSearchFvWeatherModel
+import com.bersyte.weatherapp.utils.Constants
 import com.bersyte.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -84,21 +87,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun openFavFragment(openFromFav:Boolean){
         val fragment = RecFavFragment()
         val bundle = Bundle()
-        bundle.putBoolean("openFromFav",openFromFav)
+        bundle.putBoolean(Constants.OPEN_FROM_FAV,openFromFav)
         fragment.arguments = bundle
         (activity as MainActivity?)?.showCityWeather(fragment, bundle)
     }
 
     private fun getWeather() {
         val mString = searchedcCity.split(",").toTypedArray()
-        viewModel.getCityWeather(mString[0])
+        lifecycleScope.launch {
+            viewModel.getCityWeather(mString[0])
+        }
         viewModel.weatherResponse.observe(viewLifecycleOwner) { weatherData ->
             binding.apply {
                 //val tempInDegree=weatherData.weather[0].main-273.15
                 val recFavWeatherModel = RecSearchFvWeatherModel(
                     id = 0,
                     cityName = searchedcCity,
-                    cityTempInDegree = weatherData.weather[0].main,
+                    cityTempInDegree = weatherData.main.temp.toString(),
                     cityTempInWords = weatherData.weather[0].description,
                     isFav = false,
                     isRecentSearch = isFromSearch
@@ -113,41 +118,48 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (description.isNotEmpty()) {
             when (description) {
                 "clear sky" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                    this.setImageResource(R.drawable.icon_mostly_sunny_small)
                     return
                 }
                 "few clouds" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_partly_cloudy_small))
+                    this.setImageResource(R.drawable.icon_partly_cloudy_small)
                     return
                 }
                 "scattered clouds" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_cloudy_small))
+                    this.setImageResource(R.drawable.icon_mostly_cloudy_small)
                     return
                 }
                 "shower rain" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                    this.setImageResource(R.drawable.icon_rain_small)
                     return
                 }
                 "rain" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                    this.setImageResource(R.drawable.icon_rain_small)
                     return
                 }
                 "thunderstorm" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_thunderstorm_small))
+                    this.setImageResource(R.drawable.icon_thunderstorm_small)
                     return
                 }
                 "snow" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                    this.setImageResource(R.drawable.icon_wind_info)
                     return
                 }
                 "mist" -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                    this.setImageResource(R.drawable.icon_wind_info)
+                    return
+                }
+                "smoke" -> {
+
+                    this.setImageResource(R.drawable.icon_wind_info)
                     return
                 }
                 else -> {
-                    this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                    this.setImageResource(R.drawable.icon_mostly_sunny_small)
                     return
                 }
+
+
             }
         }
     }
@@ -156,5 +168,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onDestroy()
         _binding?.unbind()
     }
+
+
 
 }

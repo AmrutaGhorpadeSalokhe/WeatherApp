@@ -7,7 +7,6 @@ import com.bersyte.weatherapp.R
 import com.google.android.material.button.MaterialButton
 import java.util.*
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 @BindingAdapter("setIcon")
 fun MaterialButton.setIcon(isFav:Boolean?){
@@ -63,42 +62,46 @@ fun ImageView.setWeatherImage(description: String) {
     if (description.isNotEmpty()) {
         when (description) {
             "clear sky" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                this.setImageResource(R.drawable.icon_mostly_sunny_small)
                 return
             }
             "few clouds" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_partly_cloudy_small))
+                this.setImageResource(R.drawable.icon_partly_cloudy_small)
                 return
             }
             "scattered clouds" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_cloudy_small))
+                this.setImageResource(R.drawable.icon_mostly_cloudy_small)
                 return
             }
             "shower rain" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                this.setImageResource(R.drawable.icon_rain_small)
                 return
             }
             "rain" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_rain_small))
+                this.setImageResource(R.drawable.icon_rain_small)
                 return
             }
             "thunderstorm" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_thunderstorm_small))
+                this.setImageResource(R.drawable.icon_thunderstorm_small)
                 return
             }
             "snow" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                this.setImageResource(R.drawable.icon_wind_info)
                 return
             }
             "mist" -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_wind_info))
+                this.setImageResource(R.drawable.icon_wind_info)
+                return
+            }
+            "smoke" -> {
+
+                this.setImageResource(R.drawable.icon_wind_info)
                 return
             }
             else -> {
-                this.setImageDrawable(resources.getDrawable(R.mipmap.icon_mostly_sunny_small))
+                this.setImageResource(R.drawable.icon_mostly_sunny_small)
                 return
             }
-
         }
     }
 }

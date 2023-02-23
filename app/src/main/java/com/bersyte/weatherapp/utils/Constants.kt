@@ -6,6 +6,9 @@ object Constants {
     const val REMOVE_ONLY_FAV="only_fav"
     const val REMOVE_ALL_FAV="only_all_fav"
     const val REMOVE_ALL_SEARCH="only_all_search"
+    const val HOME_TAG="home"
+    const val SEARCH_TAG="searchTag"
+    const val OPEN_FROM_FAV="openFromFav"
     var IMG_URL = "https://openweathermap.org/img/w/";
     val city= arrayListOf<String>(
 

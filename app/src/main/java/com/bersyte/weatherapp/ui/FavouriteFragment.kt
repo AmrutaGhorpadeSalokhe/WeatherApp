@@ -38,13 +38,13 @@ class FavouriteFragment : Fragment(R.layout.fragment_favourite),OnItemSelected {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataModelList=ArrayList()
+      /*  dataModelList=ArrayList()
         val llm: LinearLayoutManager = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.VERTICAL
         myRecyclerViewAdapter=FavouriteRecentSearchAdapter(dataModelList, this)
         binding.recyclerView.layoutManager = llm
         binding.recyclerView.adapter=myRecyclerViewAdapter
-
+*/
     }
    /* private fun populateData() {
         viewModel.getAllFavoriteCity()

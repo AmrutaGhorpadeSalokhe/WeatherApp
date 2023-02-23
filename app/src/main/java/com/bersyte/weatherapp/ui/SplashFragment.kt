@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bersyte.weatherapp.R
 import com.bersyte.weatherapp.databinding.FragmentSplashBinding
+import com.bersyte.weatherapp.utils.Constants.HOME_TAG
 
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
@@ -28,7 +29,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             override fun run() {
                 try {
                     sleep(3000)
-                    (activity as MainActivity?)?.showFragment(HomeFragment(), false)
+                    (activity as MainActivity?)?.showFragment(HomeFragment(), false,HOME_TAG)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
